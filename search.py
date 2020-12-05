@@ -20,13 +20,13 @@ def kimetsu_search(word, file_name):
     else:
         print("『{}』はありません".format(word))
         eel.view_log_js("『{}』はありません".format(word))
-        # 追加
-        add_flg=input("追加登録しますか？(0:しない 1:する)　＞＞　")
-        if add_flg=="1":
-            source.append(word)
+        # 見つからなかった場合のCSVへの追加処理はコンソール操作が必要なため一旦コメントアウト
+        # add_flg=input("追加登録しますか？(0:しない 1:する)　＞＞　")
+        # if add_flg=="1":
+        #     source.append(word)
     
     # CSV書き込み
-    df=pd.DataFrame(source,columns=["name"])
-    df.to_csv("./{}".format(file_name),encoding="utf_8-sig")
-    print(source)
+    # df=pd.DataFrame(source,columns=["name"])
+    # df.to_csv("./{}".format(file_name),encoding="utf_8-sig")
+    # print(source)
     eel.view_log_js(source)
