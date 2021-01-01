@@ -59,16 +59,20 @@ def make_recept(item_code, price, item_name ,amount, total_price, pay):
         f.write("商品コード:{}\n商品名:{}\n数量:{}個\n合計金額:{}円\nお支払い金額:{}円\nお釣り:{}円".format(item_code, item_name, amount, total_price, pay, change))
 
 def num_check(num_object, message_item):
-    if not num_object or not num_object.isdecimal():
+    if not num_object:
+        eel.view_log_js("{}が入力されていません：".format(message_item))
+        return False
+    elif not num_object.isdecimal():
         eel.view_log_js("不正な値です{}は半角数字で入力してください：".format(message_item))
+        return False
     else:
         return num_object
 
 def pay_check(pay_object, total_price):
-    if not num_check(pay_object, "金額"):
+    if not num_check(pay_object, "預かり金額"):
         return False
     if (int(pay_object) - int(total_price)) < 0:
-        eel.view_log_js("金額が足りません。もう一度入力してください：")
+        eel.view_log_js("預かり金額が足りません。もう一度入力してください：")
         return False
     return pay_object
 
@@ -76,6 +80,7 @@ def pay_check(pay_object, total_price):
 
 def order_input(order_num):
     if not num_check(order_num, "注文番号"):
+        # return False
         return False
     # マスタ登録
     item_master=[]
@@ -90,6 +95,9 @@ def order_input(order_num):
     order.add_item_order(order_num)
     if order.view_item_list():
         order_result = True
+        return True
     else:
         print("ご注文の商品はありません。もう一度やり直してください")
         eel.view_log_js("ご注文の商品はありません。もう一度やり直してください")
+        return False
+    
