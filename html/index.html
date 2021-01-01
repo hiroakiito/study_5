@@ -1,29 +1,83 @@
 <html>
     <head>
-        <title>eelテスト</title>
+        <title>POSシステム</title>
         <link rel="stylesheet" href="./style.css">
     </head>
     <body>
-        <h2>eelテスト</h2>
+        <h2>POSシステム</h2>
         <form action="index.html">
-            <label for="">CSVファイル名</label>
-            <input type="text" id="csv-name">
-            <label for="">検索ワード</label>
-            <input type="text" id="search-word">
-            <button id="search" type="button">検索</button>
+            <label for="">注文番号</label>
+            <input type="text" id="order_num">
+
+            <label for="">商品名</label>
+            <input type="text" id="item_name" disabled>
+
+            <label for="">商品単価</label>
+            <input type="text" id="price" disabled>
+
+            <label for="">購入数</label>
+            <input type="text" id="amount" disabled>
+
+            <label for="">合計金額</label>
+            <input type="text" id="total_price" disabled>
+
+            <label for="">預かり金額</label>
+            <input type="text" id="pay" disabled>
+
+            <label for="">お釣り</label>
+            <input type="text" id="change" disabled>
+
             <textarea name="" id="search_result" cols="30" rows="10"></textarea>
         </form>
         <script type="text/javascript" src="./eel.js"></script>
         <script>
-            var file_name = document.getElementById('csv-name');
-            var search_word = document.getElementById('search-word');
-
-            search.addEventListener('click', () => {
-                eel.kimetsu_search(search_word.value, file_name.value);
+            // 注文番号入力確定後処理
+            order_num.addEventListener('keypress', (e) => {
+                if (e.keyCode === 13) {
+                    eel.order_input(order_num.value);
+	            } 
             })
+            // 数量入力確定後処理
+            amount.addEventListener('keypress', (e) => {
+                if (e.keyCode === 13) {
+                    eel.calc(order_num.value, price.value, item_name.value, amount.value);
+	            } 
+            })
+            // 支払い金額入力後処理
+            pay.addEventListener('keypress', (e) => {
+                if (e.keyCode === 13) {
+                    eel.make_recept(order_num.value, price.value, item_name.value, amount.value, total_price.value, pay.value);
+                    amount.setAttribute("disabled", true);
+	            } 
+            })
+            // ログテキストエリア出力処理
             eel.expose(view_log_js)
             function view_log_js(text){
-                document.getElementById('search_result').value += text + "\n";
+                search_result.value += text + "\n";
+            }
+
+            // 入力した注文番号が有効な場合、商品名と価格を表示する
+            eel.expose(set_item_js)
+            function set_item_js(mst_item_name, mst_item_price, search_result) {
+                item_name.value = mst_item_name;
+                price.value = mst_item_price;
+                order_num.setAttribute("disabled", true);
+                amount.removeAttribute("disabled");
+            }
+            // 入力した数量が有効な場合、合計金額を表示する
+            eel.expose(set_total_price_js)
+            function set_total_price_js(total) {
+                total_price.value = total;
+                total_price.setAttribute("disabled", true);
+                amount.setAttribute("disabled", true);
+                pay.removeAttribute("disabled");
+            }
+            // 入力した数量が有効な場合、お釣りをを表示する
+            eel.expose(set_change_js)
+            function set_change_js(change_price) {
+                change.value = change_price;
+                change.setAttribute("disabled", true);
+                pay.setAttribute("disabled", true);
             }
         </script>
     </body>

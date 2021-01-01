@@ -1,5 +1,16 @@
 form {
     width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}
+label {
+    width: 40%;
+    margin-bottom: 10px;
+}
+input {
+    width: 60%;
+    margin-bottom: 10px;
 }
 #search_result {
     width: 100%;
