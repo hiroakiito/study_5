@@ -7,7 +7,7 @@
         <h2>POSシステム</h2>
         <form action="index.html">
             <label for="">注文番号</label>
-            <input type="text" id="order_num">
+            <input type="text" id="order_num" autofocus>
 
             <label for="">商品名</label>
             <input type="text" id="item_name" disabled>
@@ -31,14 +31,6 @@
         </form>
         <script type="text/javascript" src="./eel.js"></script>
         <script>
-            // 画面読み込み時に注文番号テキストボックスにフォーカス
-            window.onload = function(){
-                order_num.focus();
-            }
-            // 注文番号入力確定後処理
-            function orderNumKeyDown() {
-                eel.order_input(order_num.value);
-            }
             //イベント設定
             order_num.addEventListener('blur', (e) => {
                 if (order_num.disabled == false) {
@@ -83,6 +75,10 @@
             })
 
             //関数定義
+            // 注文番号入力確定後処理
+            function orderNumKeyDown() {
+                eel.order_input(order_num.value);
+            }
             // 数量入力確定後処理
             function mountKeyDown() {
                 eel.calc(order_num.value, price.value, item_name.value, amount.value);
